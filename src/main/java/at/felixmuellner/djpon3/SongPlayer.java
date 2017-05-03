@@ -21,8 +21,13 @@ public class SongPlayer {
 
         IVoiceChannel voiceChannel = guild.getVoiceChannelByID(voiceChannelId);
         if (voiceChannel == null) {
-            //no voice channel found
-            return;
+            //configured voice channel not found, try to fall back to default channel
+            if (guild.getVoiceChannels().size() == 0) {
+                //the guild doesn't have any voice channels at all
+                return;
+            } else {
+                voiceChannel = guild.getVoiceChannels().get(0);
+            }
         }
         voiceChannel.join();
 
