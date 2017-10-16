@@ -144,8 +144,8 @@ public class MessageReceivedListener implements IListener<MessageReceivedEvent> 
         else if (command.equals("pause")) {
             SongPlayer.pause(event.getGuild());
         }
-        //next
-        else if (command.equals("next")) {
+        //next / skip
+        else if (command.equals("next") || command.equals("skip")) {
             SongPlayer.next(event.getGuild());
         }
         //stop

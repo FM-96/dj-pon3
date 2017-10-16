@@ -81,7 +81,7 @@ public class EmbedCreator {
                 .appendField("Queue Random Song", "`" + prefix + " queuerandom`", false)
                 .appendField("Play", "`" + prefix + " play`", false)
                 .appendField("Pause", "`" + prefix + " pause`", false)
-                .appendField("Next Song", "`" + prefix + " next`", false)
+                .appendField("Next Song", "`" + prefix + " next`\n`" + prefix + " skip`", false)
                 .appendField("Stop", "`" + prefix + " stop`", false)
                 .appendField("View Queue", "`" + prefix + " queue`", false);
 
