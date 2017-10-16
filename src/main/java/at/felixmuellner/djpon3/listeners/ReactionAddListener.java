@@ -9,6 +9,7 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.reaction.Reactio
 import sx.blah.discord.handle.obj.IEmbed;
 import sx.blah.discord.handle.obj.IMessage;
 import sx.blah.discord.handle.obj.IReaction;
+import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.RequestBuffer;
 
 import java.awt.*;
@@ -35,7 +36,7 @@ public class ReactionAddListener implements IListener<ReactionAddEvent> {
         boolean play = messageEmbed.getTitle().contains("Play");
 
         if (messageEmbed.getColor().equals(new Color(214, 81, 177))) {
-            if (event.getReaction().getUnicodeEmoji().equals(EmojiManager.getForAlias("x"))) {
+            if (event.getReaction().getEmoji().getName().equals(EmojiManager.getForAlias("x").getUnicode())) {
                 //cancel
                 RequestBuffer.request(() -> {
                     event.getMessage().edit(EmbedCreator.canceled(play));
@@ -44,11 +45,11 @@ public class ReactionAddListener implements IListener<ReactionAddEvent> {
                     event.getMessage().addReaction(EmojiManager.getForAlias("wastebasket"));
                 });
                 this.removeReactions(event.getMessage());
-            } else if (messageEmbed.getDescription().contains(event.getReaction().getUnicodeEmoji().getUnicode())) {
+            } else if (messageEmbed.getDescription().contains(event.getReaction().getEmoji().getName())) {
                 //select song
                 int selectionNumber = -1;
                 for (int i = 0; i < reactionNumbers.length; ++i) {
-                    if (event.getReaction().getUnicodeEmoji().equals(reactionNumbers[i])) {
+                    if (event.getReaction().getEmoji().getName().equals(reactionNumbers[i].getUnicode())) {
                         selectionNumber = i;
                         break;
                     }
@@ -74,7 +75,7 @@ public class ReactionAddListener implements IListener<ReactionAddEvent> {
                 }
             }
         } else {
-            if (event.getReaction().getUnicodeEmoji().equals(EmojiManager.getForAlias("wastebasket"))) {
+            if (event.getReaction().getEmoji().getName().equals(EmojiManager.getForAlias("wastebasket").getUnicode())) {
                 //delete
                 RequestBuffer.request(() -> {
                     event.getMessage().delete();
@@ -84,10 +85,11 @@ public class ReactionAddListener implements IListener<ReactionAddEvent> {
     }
 
     private void removeReactions(IMessage message) {
+        IUser clientUser = message.getClient().getOurUser();
         for (IReaction reaction : message.getReactions()) {
-            if (reaction.getClientReacted() && !reaction.getUnicodeEmoji().equals(EmojiManager.getForAlias("wastebasket"))) {
+            if (reaction.getUserReacted(clientUser) && !reaction.getEmoji().getName().equals(EmojiManager.getForAlias("wastebasket").getUnicode())) {
                 RequestBuffer.request(() -> {
-                    reaction.getMessage().removeReaction(reaction);
+                    reaction.getMessage().removeReaction(clientUser, reaction);
                 });
             }
         }
