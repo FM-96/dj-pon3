@@ -13,6 +13,8 @@ import sx.blah.discord.handle.obj.IUser;
 import sx.blah.discord.util.RequestBuffer;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Felix on 06.04.2017.
@@ -86,7 +88,8 @@ public class ReactionAddListener implements IListener<ReactionAddEvent> {
 
     private void removeReactions(IMessage message) {
         IUser clientUser = message.getClient().getOurUser();
-        for (IReaction reaction : message.getReactions()) {
+        List<IReaction> reactionList = new ArrayList<IReaction>(message.getReactions()); // copy of reactions needed to avoid concurrency exception
+        for (IReaction reaction : reactionList) {
             if (reaction.getUserReacted(clientUser) && !reaction.getEmoji().getName().equals(EmojiManager.getForAlias("wastebasket").getUnicode())) {
                 RequestBuffer.request(() -> {
                     reaction.getMessage().removeReaction(clientUser, reaction);
