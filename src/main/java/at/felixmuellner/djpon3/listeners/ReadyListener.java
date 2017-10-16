@@ -13,9 +13,7 @@ public class ReadyListener implements IListener<ReadyEvent> {
     @Override
     public void handle(ReadyEvent event) {
         for (IGuild guild : event.getClient().getGuilds()) {
-            System.out.println("Guild: " + guild.getName());
             long voiceChannelId = GuildSettingsManager.getInstance().getVoiceChannelId(guild);
-            System.out.println("VC ID: " + voiceChannelId);
             IVoiceChannel voiceChannel = guild.getVoiceChannelByID(voiceChannelId);
             voiceChannel.join();
         }
