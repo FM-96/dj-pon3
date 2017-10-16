@@ -17,7 +17,7 @@ import java.util.List;
 public class SongPlayer {
     public static void addSong(IGuild guild, String songTitle, boolean play) {
         boolean allowInterruption = GuildSettingsManager.getInstance().isAllowInterruption(guild);
-        String voiceChannelId = GuildSettingsManager.getInstance().getVoiceChannelId(guild);
+        long voiceChannelId = GuildSettingsManager.getInstance().getVoiceChannelId(guild);
 
         IVoiceChannel voiceChannel = guild.getVoiceChannelByID(voiceChannelId);
         if (voiceChannel == null) {

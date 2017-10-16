@@ -183,7 +183,12 @@ public class MessageReceivedListener implements IListener<MessageReceivedEvent> 
         }
         //channel
         else if (command.startsWith("channel ")) {
-            String channelId = command.substring(8);
+            long channelId;
+            try {
+                channelId = Long.parseLong(command.substring(8));
+            } catch (Exception e) {
+                channelId = -1;
+            }
             if (event.getGuild().getVoiceChannelByID(channelId) == null) {
                 //invalid; send usage information
                 this.sendUsageInformation(event);

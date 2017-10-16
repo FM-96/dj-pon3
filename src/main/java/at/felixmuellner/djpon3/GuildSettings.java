@@ -5,7 +5,7 @@ package at.felixmuellner.djpon3;
  */
 public class GuildSettings {
     private boolean allowInterruption;
-    private String voiceChannelId;
+    private long voiceChannelId;
 
     public GuildSettings() {}
 
@@ -13,7 +13,7 @@ public class GuildSettings {
         return this.allowInterruption;
     }
 
-    public String getVoiceChannelId() {
+    public long getVoiceChannelId() {
         return this.voiceChannelId;
     }
 
@@ -21,7 +21,7 @@ public class GuildSettings {
         this.allowInterruption = allowInterruption;
     }
 
-    public void setVoiceChannelId(String voiceChannelId) {
+    public void setVoiceChannelId(long voiceChannelId) {
         this.voiceChannelId = voiceChannelId;
     }
 }

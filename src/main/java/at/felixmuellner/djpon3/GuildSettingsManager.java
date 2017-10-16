@@ -43,14 +43,17 @@ public class GuildSettingsManager {
         return true;
     }
 
-    public synchronized String getVoiceChannelId(IGuild guild) {
+    public synchronized long getVoiceChannelId(IGuild guild) {
         if (this.guildSettingsMap.containsKey(guild.getStringID())) {
-            return this.guildSettingsMap.get(guild.getStringID()).getVoiceChannelId();
+            long savedId = this.guildSettingsMap.get(guild.getStringID()).getVoiceChannelId();
+            if (guild.getVoiceChannelByID(savedId) != null) {
+                return savedId;
+            }
         }
         if (guild.getVoiceChannels().size() > 0) {
-            return guild.getVoiceChannels().get(0).getStringID();
+            return guild.getVoiceChannels().get(0).getLongID();
         }
-        return null;
+        return -1;
     }
 
     public synchronized void setAllowInterruption(IGuild guild, boolean allowInterruption) {
@@ -60,9 +63,9 @@ public class GuildSettingsManager {
         } else {
             guildSettings = new GuildSettings();
             if (guild.getVoiceChannels().size() > 0) {
-                guildSettings.setVoiceChannelId(guild.getVoiceChannels().get(0).getStringID());
+                guildSettings.setVoiceChannelId(guild.getVoiceChannels().get(0).getLongID());
             } else {
-                guildSettings.setVoiceChannelId(null);
+                guildSettings.setVoiceChannelId(-1);
             }
         }
         guildSettings.setAllowInterruption(allowInterruption);
@@ -71,7 +74,7 @@ public class GuildSettingsManager {
         this.save();
     }
 
-    public synchronized void setVoiceChannelId(IGuild guild, String voiceChannelId) {
+    public synchronized void setVoiceChannelId(IGuild guild, Long voiceChannelId) {
         GuildSettings guildSettings;
         if (this.guildSettingsMap.containsKey(guild.getStringID())) {
             guildSettings = this.guildSettingsMap.get(guild.getStringID());

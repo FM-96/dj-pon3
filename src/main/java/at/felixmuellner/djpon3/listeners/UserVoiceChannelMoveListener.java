@@ -11,7 +11,7 @@ public class UserVoiceChannelMoveListener implements IListener<UserVoiceChannelM
     @Override
     public void handle(UserVoiceChannelMoveEvent event) {
         if (event.getUser().equals(event.getClient().getOurUser())) {
-            GuildSettingsManager.getInstance().setVoiceChannelId(event.getGuild(), event.getNewChannel().getStringID());
+            GuildSettingsManager.getInstance().setVoiceChannelId(event.getGuild(), event.getNewChannel().getLongID());
         }
     }
 }
